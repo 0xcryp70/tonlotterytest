@@ -1,0 +1,54 @@
+.ref-page {
+  padding: 20px;
+  color:silver;
+//  font-family: Arial, sans-serif;
+  font-family: 'Myfont', sans-serif;
+  text-align: center;
+  padding-bottom: 90px;
+
+  .go-back-button {
+    margin-bottom: 20px;
+    margin-top: 20px;
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #168425;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #22b133;
+    }
+  }
+
+  .referral-info {
+    margin-top: 20px;
+    
+    .referral-user {
+      border: 1px solid #ccc;
+      padding: 10px;
+      margin-bottom: 20px;
+      border-radius: 5px;
+
+      h2 {
+        margin: 0 0 10px;
+      }
+
+      ul {
+        list-style-type: none;
+        padding: 0;
+
+        li {
+          background: #23372a;
+          padding: 5px;
+          margin: 5px 0;
+          border-radius: 3px;
+        }
+      }
+    }
+  }
+}
+.ref-image {
+	width: 100%;
+}

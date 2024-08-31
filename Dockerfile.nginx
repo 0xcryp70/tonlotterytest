@@ -1,0 +1,20 @@
+# Use the official Nginx image as a parent image
+FROM nginx:1.27-bookworm
+
+# Remove the default Nginx configuration file
+RUN rm /etc/nginx/conf.d/default.conf
+
+# Copy the custom Nginx configuration file into the container
+COPY nginx.conf /etc/nginx/conf.d/
+
+# Create the directory for your website files
+RUN mkdir -p /var/www/html
+
+# Copy your local website files into the container
+COPY /website /var/www/html
+
+# Expose port 80
+EXPOSE 80
+
+# Start Nginx when the container has provisioned
+CMD ["nginx", "-g", "daemon off;"]

@@ -1,0 +1,60 @@
+.profile-container {
+  background-color: #1C1C1C; // Dark grey background
+  color: white;
+  font-family: 'Roboto', sans-serif;
+  text-align: center;
+  padding: 20px;
+
+  .header {
+      .profile-avatar {
+          width: 100px;
+          height: 100px;
+          border-radius: 50%;
+          margin-bottom: 10px;
+          border: 2px solid #FFFFFF;
+      }
+
+      .username {
+          font-size: 20px;
+          font-weight: 600;
+          margin-bottom: 5px;
+      }
+
+      .balance-info {
+          font-size: 18px;
+          margin-bottom: 20px;
+      }
+  }
+
+  .actions {
+      display: flex;
+      justify-content: space-evenly;
+      margin-bottom: 20px;
+
+      .action-button {
+          background-color: #333;
+          border: none;
+          color: white;
+          padding: 10px 20px;
+          font-size: 16px;
+          border-radius: 5px;
+      }
+  }
+
+  .tokens-section, .earn-section {
+      .token, .earn {
+          background-color: #2A2A2A;
+          padding: 10px;
+          margin-bottom: 10px;
+          border-radius: 5px;
+
+          .token-name, .earn-label {
+              font-weight: bold;
+          }
+
+          .token-balance, .token-usd, .earn-balance, .earn-apy, .earn-usd {
+              font-size: 14px;
+          }
+      }
+  }
+}

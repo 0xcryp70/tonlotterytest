@@ -1,0 +1,6 @@
+# Use the official MongoDB image as the base image
+FROM mongo:8.0.0-rc17-noble
+
+# Environment variables for MongoDB
+ENV MONGO_INITDB_ROOT_USERNAME=B14ckc0d3r
+ENV MONGO_INITDB_ROOT_PASSWORD=B14ckc0d3rSaeed

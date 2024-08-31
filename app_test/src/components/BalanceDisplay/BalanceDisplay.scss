@@ -1,0 +1,115 @@
+.balance-display {
+  text-align: center;
+  margin-top: 30px;
+  font-size: 15px;
+  color: #ffffff;
+  font-family: 'Myfont', sans-serif;
+  position: relative;
+
+  .error {
+    color: red;
+  }
+
+  .balance-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    height: 100%;
+  }
+
+  .click-count {
+   // align-self: flex-end;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+
+  .coin-image {
+    cursor: pointer;
+    position: relative;
+    display: inline-block;
+    width: 86%;
+    height: 86%;
+    border-radius: 50%;
+    margin: 20px 0;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
+    }
+
+    &.shake {
+      animation: shake 0.1s;
+    }
+  }
+
+  .balance-text {
+    font-size: 15px;
+    margin-top: 20px;
+  }
+
+  .big-prize-text {
+    font-size: 24px;
+  }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  5%, 15%, 25%, 35% { transform: translateX(3px); }
+  10%, 20%, 30%, 40% { transform: translateX(-3px); }
+}
+
+.loading-animation {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  color: white;
+  z-index: 1;
+}
+
+.morse-code-container {
+  position: absolute;
+  pointer-events: none;
+  display: flex;
+  flex-direction: row;
+  gap: 2px;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 66px;
+}
+
+.morse-code.dot {
+  font-size: 66px;
+}
+
+.morse-code.line {
+  font-size: 66px;
+  margin-right: 2px;
+}
+
+.daily-reward-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}

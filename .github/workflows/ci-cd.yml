@@ -1,0 +1,217 @@
+name: CI/CD Pipeline
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v1
+
+    - name: Login to Docker Hub
+      uses: docker/login-action@v2
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+
+    - name: Login to GitHub Container Registry
+      uses: docker/login-action@v2
+      with:
+        registry: ghcr.io
+        username: ${{ github.actor }}
+        password: ${{ secrets.MY_GITHUB_TOKEN }}
+
+    - name: Check for changes in app folder
+      id: check_app
+      run: |
+        git diff --quiet HEAD^ HEAD app || echo "::set-output name=changed::true"
+
+    - name: Build and push JS app Docker image
+      if: steps.check_app.outputs.changed == 'true'
+      uses: docker/build-push-action@v2
+      with:
+        context: .
+        file: ./Dockerfile
+        push: true
+        tags: crxc0d3r/my-js-app:latest
+        cache-from: crxc0d3r/my-js-app:latest
+        cache-to: type=inline
+
+    - name: Check for changes in app test folder
+      id: check_app_test
+      run: |
+        git diff --quiet HEAD^ HEAD app_test || echo "::set-output name=changed::true"
+        
+    - name: Build and push JS app test Docker image
+      if: steps.check_app_test.outputs.changed == 'true'
+      uses: docker/build-push-action@v2
+      with:
+        context: .
+        file: ./Dockerfile.beta
+        push: true
+        tags: ghcr.io/0xcryp70/my-js-app-test:latest
+        cache-from: type=registry,ref=ghcr.io/0xcryp70/my-js-app-test:latest
+        cache-to: type=inline
+
+    - name: Check for changes in Nginx configuration
+      id: check_nginx
+      run: |
+        git diff --quiet HEAD^ HEAD Dockerfile.nginx nginx.conf || echo "::set-output name=changed::true"
+
+    - name: Build and push Nginx Docker image
+      if: steps.check_nginx.outputs.changed == 'true'
+      uses: docker/build-push-action@v2
+      with:
+        context: .
+        file: ./Dockerfile.nginx
+        push: true
+        tags: crxc0d3r/my-nginx:latest
+        cache-from: type=registry,ref=crxc0d3r/my-nginx:latest
+        cache-to: type=inline
+
+    - name: Check for changes in mongo configuration
+      id: check_mongo
+      run: |
+        git diff --quiet HEAD^ HEAD Dockerfile.mongodb || echo "::set-output name=changed::true"
+
+    - name: Build and push custom MongoDB Docker image
+      if: steps.check_mongo.outputs.changed == 'true'
+      uses: docker/build-push-action@v2
+      with:
+        context: .
+        file: ./Dockerfile.mongodb  # Ensure the Dockerfile path is correct
+        push: true
+        tags: ghcr.io/0xcryp70/my-mongodb:latest
+        cache-from: type=registry,ref=ghcr.io/0xcryp70/my-mongodb:latest
+        cache-to: type=inline
+
+  test:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Login to Docker Hub
+      uses: docker/login-action@v2
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+
+    - name: Login to GitHub Container Registry
+      uses: docker/login-action@v2
+      with:
+        registry: ghcr.io
+        username: ${{ github.actor }}
+        password: ${{ secrets.MY_GITHUB_TOKEN }}
+
+    - name: Create Docker network
+      run: docker network create my-network
+
+    - name: Pull and Run Docker containers
+      run: |
+        docker pull ghcr.io/0xcryp70/my-mongodb:latest
+        docker run -d --network my-network --name my-mongodb ghcr.io/0xcryp70/my-mongodb:latest
+        docker pull crxc0d3r/my-js-app:latest
+        docker pull crxc0d3r/my-nginx:latest
+        docker pull ghcr.io/0xcryp70/my-js-app-test:latest
+        docker run -d --network my-network --name my-js-app crxc0d3r/my-js-app:latest
+        docker run -d --network my-network --name my-js-app-test ghcr.io/0xcryp70/my-js-app-test:latest
+        docker run -d --network my-network --name my-nginx-container crxc0d3r/my-nginx:latest
+        
+    - name: Wait for services to start
+      run: sleep 21  # Adjust this time if your services take longer to start
+
+    - name: Test Nginx configuration
+      run: |
+        docker exec my-nginx-container nginx -t
+        if [ $? -eq 0 ]; then
+          echo "Nginx configuration test passed"
+        else
+          echo "Nginx configuration test failed" >&2
+          exit 1
+        fi
+
+    - name: Test if JavaScript app is responding on port 8080
+      run: |
+         docker exec my-nginx-container bash -c '
+           response=$(curl -s http://my-js-app:8080)
+           if [[ $response == *"<!DOCTYPE html>"* ]] || [[ $response == *"<html"* ]]; then
+             echo "JavaScript app detected on port 8080"
+           else
+             echo "No JavaScript app detected on port 8080" >&2
+             exit 1
+           fi
+         '
+
+    - name: Test if JavaScript app test container is responding on port 8181
+      run: |
+         docker exec my-nginx-container bash -c '
+           response=$(curl -s http://my-js-app-test:8181)
+           if [[ $response == *"<!DOCTYPE html>"* ]] || [[ $response == *"<html"* ]]; then
+             echo "JavaScript app test container detected on port 8181"
+           else
+             echo "No JavaScript app detected in test container" >&2
+             exit 1
+           fi
+         '
+
+    - name: Cleanup
+      run: |
+        docker stop my-js-app my-nginx-container my-js-app-test my-mongodb
+        docker rm my-js-app my-nginx-container my-js-app-test my-mongodb
+        docker network rm my-network
+
+  deploy:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    needs: [build, test]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.MY_GITHUB_TOKEN }}
+
+      - name: Deploy to Server
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          SERVER_IP: ${{ secrets.SERVER_IP }}
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+          GITHUB_USERNAME: ${{ github.actor }}
+          GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}
+        run: |
+          echo "$SSH_PRIVATE_KEY" > ssh_key
+          chmod 600 ssh_key
+          scp -i ssh_key -o StrictHostKeyChecking=no docker-compose.yml root@$SERVER_IP:/home/tonlottery/
+          ssh -o StrictHostKeyChecking=no -i ssh_key root@$SERVER_IP "
+            docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+            docker login ghcr.io -u $GITHUB_USERNAME -p $GITHUB_TOKEN
+            cd /home/tonlottery
+            docker compose pull
+            docker compose up -d --remove-orphans
+          "
+          rm ssh_key

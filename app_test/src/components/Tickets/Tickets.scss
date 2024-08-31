@@ -1,0 +1,237 @@
+.send-transaction-image {
+  max-width: 100%;
+  height: auto
+//  margin-bottom: 20px;
+}
+
+.ticket-form {
+  font-family: 'Myfont', sans-serif;
+  flex: 1;
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  padding: 9px;
+  align-items: center;
+  padding-bottom: 90px;
+  h3 {
+    color: white;
+    opacity: 0.8;
+    font-size: 21px;
+  }
+
+  > div:nth-child(2) {
+    width: 100%;
+
+    span {
+      word-break: break-word;
+    }
+  }
+
+  > button {
+    border: none;
+    padding: 7px 15px;
+    border-radius: 15px;
+    cursor: pointer;
+
+    background-color: rgb(18 18 20);
+  //  background-color: rgba(102, 170, 238, 0.91);
+    color: white;
+    font-size: 16px;
+    line-height: 20px;
+
+    transition: transform 0.1s ease-in-out;
+
+    &:hover {
+      transform: scale(1.03);
+    }
+
+    &:active {
+      transform: scale(0.97);
+    }
+  }
+}
+
+.ticket-selection {
+  display: flex;
+  flex-direction: column;
+  font-family: 'Myfont', sans-serif;
+  align-items: center;
+  margin-bottom: 20px;
+
+  label {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+    color: silver;
+  }
+
+  input[type="number"] {
+    padding: 0.5rem;
+    font-size: 1rem;
+    width: 100px;
+    color: silver;
+    background-color: #4d5d53;
+    text-align: center;
+    border: 1px solid #8d7b59;;
+    border-radius: 5px;
+  }
+}
+
+.notification {
+  padding: 1rem;
+  margin-top: 1rem;
+  background-color: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.popup-notification {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #007bff;
+  color: #fff;
+  padding: 1rem;
+  border-radius: 5px;
+  z-index: 1000;
+  display: none;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.popup-notification.show {
+  display: flex;
+}
+
+.popup-close-btn {
+  margin-left: 10px;
+  cursor: pointer;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.2rem;
+}
+
+/* New Styles for Purchased Ticket Numbers */
+.ticketnumbers {
+  margin: 15px 0;
+  width: 80%;
+  text-align: center;
+  color:silver;
+
+  h4 {
+    text-align: center;
+    opacity: 0.8;
+    font-size: 12px;
+    margin-bottom: 10px;
+  }
+
+  .ticketlist {
+    list-style: none;
+    text-align: center;
+    width: 100%;
+    padding: 10px;
+
+    li {
+      align-items: center;
+      background: #23372a;
+      color: silver;
+      padding: 10px;
+      margin: 5px 0;
+      border-radius: 5px;
+      font-size: 15px;
+      text-align: center;
+    }
+  }
+}
+.ticketnumbers h4 {
+  font-size: 21px;
+  color: silver;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.infopage-link {
+    margin-top: 20px;
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #367d8b;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    width: 200px;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #0056b3;
+    }
+}
+.balance-section {
+  color:silver;
+  width: 96%;
+  background: #2c2c2e; /* Light gray background for a modern feel */
+  border-radius: 9px; /* Rounded corners */
+  padding: 10px; /* Spacing inside the section */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+//  max-width: 90%; /* Limiting the width for better readability */
+//  margin: 20px auto; /* Centering the section horizontally */
+  text-align: center; /* Center-aligning the text */
+}
+
+.balance-section h4 {
+  font-size: 1.5rem; /* Larger font size for the balance */
+  color: silver; /* Dark gray color for readability */
+  margin-bottom: 10px; /* Space between the balance and claim text */
+}
+
+.balance-section .reward-text {
+  margin-top: -50px; /* Reduced margin-top */
+  font-size: 1rem; /* Half the font size of balance text */
+  color: silver; 
+}
+
+.balance-section .balance {
+  font-size: 1.5rem; /* Larger font size for the balance */
+  color: silver; /* Dark gray color for readability */
+}
+
+.balance-section h5 {
+  font-size: 0.90rem; /* Slightly smaller font size for the claim text */
+  color: silver; /* Lighter gray color */
+  margin-bottom: 20px; /* Space between the claim text and button */
+}
+
+.balance-section button {
+  background: #168425; /* Blue background for the button */
+  color: #fff; /* White text */
+  border: none; /* Removing default border */
+  border-radius: 5px; /* Rounded button corners */
+  padding: 10px 20px; /* Button padding */
+  margin-bottom: 20px;
+  font-size: 1rem; /* Button text size */
+  cursor: pointer; /* Pointer cursor on hover */
+  transition: background-color 0.3s ease; /* Smooth transition on hover */
+}
+
+.balance-section button:hover {
+  background: #22b133; /* Darker blue on hover */
+}
+
+.balance-section button:disabled {
+  background: #ccc; /* Gray background for disabled state */
+  cursor: not-allowed; /* Not-allowed cursor for disabled button */
+}
+.send-transaction-image {
+  border-radius: 9px;
+  max-width: 100%;
+  height: auto;
+  opacity: 0.9;
+  margin-bottom: 1px;
+//  -webkit-box-shadow:0px 3px 3px #fff;
+//  -moz-box-shadow:0px 3px 3px #fff;
+//  box-shadow: 0 19px 11px -12px #C4E7D4;
+}

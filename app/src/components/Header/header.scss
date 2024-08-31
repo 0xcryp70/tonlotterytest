@@ -1,0 +1,134 @@
+header {
+  //display: flex;
+  align-items: center;
+  font-family: 'Myfont', sans-serif;
+  justify-content: space-between;
+  padding: 10px 25px;
+
+  .rank-image {
+    width: 25px; /* Adjust the size as necessary */
+    height: 25px;
+    margin-left: 10px; /* Adjust the margin as necessary */
+    margin-right: 10px;
+    filter: brightness(0) invert(1);
+    vertical-align: middle; /* Aligns the image with the text */
+  }
+   .user-image {
+    width: 25px; /* Adjust the size as necessary */
+    height: 25px;
+    filter: brightness(0) invert(1);
+    margin-left: 10px; /* Adjust the margin as necessary */
+    margin-right: 10px;
+    vertical-align: middle; /* Aligns the image with the text */
+  }
+  .title-image {
+    max-height: 66px; // Adjust the size as needed
+    height: auto;
+    padding-left: 20px;
+    margin-bottom: 10px;
+  }
+
+  .member-info {
+    font-family: 'Myfont', sans-serif;
+    display: flex;
+    color:silver;
+    justify-content: space-between;
+    width: 100%;
+   // border: 2px solid black;
+    background: #2c2c2e;
+    padding: 9px 9px; /* Adjust the padding as necessary */
+    box-sizing: border-box;
+    align-items: center; /* Vertically center the content */
+    margin-top: 10px;
+    border-radius: 8px;
+    overflow: visible;
+    position: relative;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease;
+    .username {
+      flex: 1; /* Takes up all available space on the left */
+      text-align: left;
+    }
+
+    .rank-info {
+      display: flex;
+      align-items: center;
+      margin-right: 12px;
+    }
+  }
+
+  .connect-button {
+    display: flex;
+    align-items: center;
+    filter: grayscale(1);
+    justify-content: right;
+  }
+
+  > span {
+    font-size: 30px;
+    line-height: 34px;
+    color: blue;
+    font-weight: bold;
+  }
+}
+
+@media (max-width: 525px) {
+  header {
+    flex-direction: column;
+    gap: 7px;
+
+    > *:nth-child(2) {
+      align-self: flex-end;
+      color: silver;
+    }
+  }
+}
+// modalDropdown.scss
+.dropdown-menu {
+  top: calc(100% + 10px);
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+  display: none;
+}
+
+.member-info:hover .dropdown-menu {
+  display: block;
+    color:silver;
+    width: 100%;
+    border: 2px solid black;
+    background: #1c1c1e;
+    padding: 9px 9px; /* Adjust the padding as necessary */
+    box-sizing: border-box;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease;
+}
+
+.dropdown-menu ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.dropdown-menu li {
+  padding: 12px 16px;
+  display: block;
+}
+
+.dropdown-menu li:hover {
+  background-color: black;
+}
+
+.dropdown-menu a {
+  text-decoration: none;
+  color: silver;
+}
+
+.dropdown-menu a:hover {
+  color: #4CAF50;
+}

@@ -1,0 +1,48 @@
+.infopage {
+  padding: 20px;
+  color:silver;
+  font-family: 'Myfont', sans-serif;
+ // font-family: Arial, sans-serif;
+  padding-bottom: 90px;
+  .welcome-image {
+      border-radius: 9px;
+      max-width: 100%; /* Ensure the image doesn't exceed its natural size */
+      height: auto; /* Maintain aspect ratio */
+      margin-bottom: 20px; /* Add space between image and content */
+    }
+  .content-container {
+   max-width: 800px;
+   margin: 0 auto;
+   }
+  .code-block {
+    max-height: 400px; /* Adjust the height as needed */
+//    overflow: auto;
+    margin-top: 20px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 0.85em; // Adjust the font size here
+  }
+  .code-block pre {
+  margin: 0;
+  padding: 20px;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  }
+
+  .go-back-button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #367d8b;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #0056b3;
+    }
+  }
+}
+

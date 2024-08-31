@@ -1,0 +1,15 @@
+show collections
+show collectio
+show collectios
+show dbs
+db.createCollection("exampleCollection")
+show dbs
+show collections
+show dbs
+use lottery
+show dbs
+use lottery
+use admin
+show dbs
+show collections
+show databases;

@@ -1,0 +1,92 @@
+<!doctype html><html lang="en"><head>    <meta charset="UTF-8">    <meta http-equiv="X-UA-Compatible" content="IE=edge">    <meta name="viewport" content="width=device-width, initial-scale=1">    <title>Animated Coming Soon Page 2</title>    <meta name="robots" content="noindex, nofollow">    <meta property="og:url" content="https://tailwindflex.com/@sammytg7/coming-soon-page-2-2">    <meta property="og:title" content="Animated Coming Soon Page 2">    <meta property="og:description" content="Animated Coming soon Page">    <meta property="og:image" content="https://tailwindflex.com/public/images/thumbnails/coming-soon-page-2-2/canvas.min.webp?v=17">    <meta name="twitter:card" content="summary_large_image">    <meta property="twitter:domain" content="tailwindflex.com">    <meta property="twitter:url" content="https://tailwindflex.com/@sammytg7/coming-soon-page-2-2">    <meta name="twitter:title" content="Animated Coming Soon Page 2">    <meta name="twitter:description" content="Animated Coming soon Page">    <meta name="twitter:image:secure_url" content="https://tailwindflex.com/public/images/thumbnails/coming-soon-page-2-2/canvas.min.webp?v=17">    <script src="https://cdn.tailwindcss.com/3.4.3"></script><style type="text/tailwindcss">    @tailwind base;
+@tailwind components;
+@tailwind utilities;</style><script> var code = `tailwind.config = {
+  darkMode: 'class',
+  theme: {
+    extend: {
+      keyframes: {
+        wiggle: {
+          '0%, 100%': { transform: 'rotate(-12deg)' },
+          '50%': { transform: 'rotate(12deg)' },
+        }
+      },
+      animation: {
+        wiggle: 'wiggle 1s ease-in-out infinite',
+      }
+    }
+  }
+}` </script>
+            <script>
+              try {
+                eval(code)
+              } catch (e) {
+                console.log('Error in tailwind css config') 
+                eval(`tailwind.config = {
+                  darkMode: 'class',
+                  theme: {
+                    extend: {}
+                  }
+                }`)
+              }
+            </script></head><body>
+<div
+  class="h-screen w-full flex flex-col justify-center items-center bg-gray-900 dark:bg-gradient-to-r from-blue-400 to-cyan-300">
+  <div
+    class="absolute animate-bounce z-10 w-full h-[50%] flex justify-center items-end bg-gray-900 dark:bg-gradient-to-r from-blue-400 to-cyan-300">
+    <h1 class="sm:text-9xl text-7xl font-extrabold animate-[wiggle_1s_ease-in-out_infinite] text-indigo-500 font-mono">
+      Coming</h1>
+  </div>
+  <div
+    class="absolute w-full h-[50%] flex items-end justify-center bg-gray-900 dark:bg-gradient-to-r from-blue-400 to-cyan-300">
+    <h1
+      class="sm:text-7xl text-5xl animate-[wiggle_1s_ease-in-out_infinite] text-center text-white dark:text-gray-600 font-extrabold">
+      Soon</h1>
+  </div>
+
+  <div id="countdown"
+    class="absolute top-16  flex items-center justify-center text-gray-200 dark:text-white sm:text-5xl text-3xl">
+    <span id="days" ></span>
+    <span class="text-rose-500 font-semibold pr-2">D</span>
+    <span id="hours"></span>
+    <span class="text-green-500 font-semibold pr-2">H</span>
+    <span id="minutes"></span>
+    <span class="text-sky-500 font-semibold pr-2">M</span>
+    <span id="seconds"></span>
+    <span class="text-yellow-500 font-semibold pr-2">S</span>
+  </div>
+</div>
+
+<script>
+  // Set the date we're counting down to (adjust the date and time)
+  const countDownDate = new Date("Jan 1, 2025 00:00:00").getTime();
+
+  // Update the countdown every 1 second
+  const x = setInterval(function () {
+    // Get the current date and time
+    const now = new Date().getTime();
+
+    // Calculate the time remaining
+    const distance = countDownDate - now;
+
+    // Calculate days, hours, minutes, and seconds
+    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+    // Display the countdown in the HTML
+    document.getElementById("days").innerHTML = days;
+    document.getElementById("hours").innerHTML = hours;
+    document.getElementById("minutes").innerHTML = minutes;
+    document.getElementById("seconds").innerHTML = seconds;
+
+    // If the countdown is over, display a message
+    if (distance < 0) {
+      clearInterval(x);
+      document.getElementById("countdown").innerHTML = "EXPIRED";
+    }
+  }, 1000);
+</script> 
+
+
+	    </body></html>

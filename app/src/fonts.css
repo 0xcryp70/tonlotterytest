@@ -1,0 +1,18 @@
+@font-face {
+  font-family: 'Myfont';
+  src: url('assets/fonts/JUSTSansRegular.woff2') format('woff2'),
+       url('assets/fonts/JUSTSansRegular.woff') format('woff'),
+       url('assets/fonts/JUSTSansRegular.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* Global style */
+body {
+  font-family: 'Myfont', sans-serif;
+}
+
+/* Specific style */
+.big-prize-field {
+  font-family: 'Myfont', sans-serif;
+}

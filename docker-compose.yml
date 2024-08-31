@@ -1,0 +1,63 @@
+services:
+  mongodb:
+    image: ghcr.io/0xcryp70/my-mongodb:latest  # Use your custom MongoDB image
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: B14ckc0d3r  # Update with your new user credentials if required
+      MONGO_INITDB_ROOT_PASSWORD: B14ckc0d3rSaeed
+    volumes:
+      - ./mongo-data:/data/db  # Bind mount to a local directory
+
+  backup:
+    image: ghcr.io/0xcryp70/my-mongodb:latest  # Use the same custom MongoDB image for consistency
+    volumes:
+      - ./mongo-data:/data/db
+      - ./backups:/backups
+    command: >
+      bash -c 'mongodump --host mongodb --username B14ckc0d3r --password B14ckc0d3rSaeed --out /backups/$(date +"%Y-%m-%d")'
+    depends_on:
+      - mongodb
+
+  app:
+    image: crxc0d3r/my-js-app:latest
+    container_name: my-js-app
+    ports:
+      - "8080:8080"
+      - "3001:3001"
+    environment:
+      MONGO_URI: mongodb://B14ckc0d3r:B14ckc0d3rSaeed@mongodb:27017/mydatabase?authSource=admin
+    depends_on:
+      - mongodb
+
+  app-test:
+    image: ghcr.io/0xcryp70/my-js-app-test:latest
+    container_name: my-js-app-test
+    ports:
+      - "8181:8181"
+      - "3000:3000"
+    environment:
+      MONGO_URI: mongodb://B14ckc0d3r:B14ckc0d3rSaeed@mongodb:27017/mydatabase?authSource=admin
+    depends_on:
+      - mongodb
+
+  nginx:
+    image: crxc0d3r/my-nginx:latest
+    container_name: my-nginx
+    ports:
+      - "80:80"
+    depends_on:
+      - app
+
+  mongoface:
+    image: samueltallet/mongodb-php-gui
+    container_name: mongoface
+    ports:
+      - "5667:5000"
+    depends_on:
+      - mongodb
+      
+volumes:
+  mongo-data:
+    driver: local
