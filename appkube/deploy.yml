@@ -302,3 +302,53 @@ spec:
       targetPort: 5000
 
 ---
+
+# File: k8s/ingress.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: my-app-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+  - host: my-js-app.example.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: my-js-app
+            port:
+              number: 8080
+
+  - host: app3.tonlottery.info
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: my-js-app-test
+            port:
+              number: 8181
+
+  - host: mongoface.example.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: mongoface
+            port:
+              number: 5667
+
+  tls:
+  - hosts:
+    - my-js-app.example.com
+    - my-js-app-test.example.com
+    - mongoface.example.com
+
+---
