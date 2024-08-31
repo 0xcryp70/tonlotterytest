@@ -27,7 +27,7 @@ jobs:
         run: |
           echo "$SSH_PRIVATE_KEY" > ssh_key
           chmod 600 ssh_key
-          scp -i ssh_key -o StrictHostKeyChecking=no -r k8s/* root@$SERVER_IP:/home/k8s/
+          scp -i ssh_key -o StrictHostKeyChecking=no -r appkube/* root@$SERVER_IP:/home/app/
           rm ssh_key
 
       - name: Deploy to K3s
@@ -58,7 +58,7 @@ jobs:
               --namespace=myapp \
               --dry-run=client -o yaml | kubectl apply -f -
 
-            kubectl apply -f /home/k8s/ -n myapp
+            kubectl apply -f /home/app/ -n myapp
 
             kubectl rollout status deployment/mongodb -n myapp
             kubectl rollout status deployment/app -n myapp
