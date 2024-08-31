@@ -324,16 +324,16 @@ spec:
             port:
               number: 8080
 
-  - host: app3.tonlottery.info
+  - host: appbeta.tonlottery.info
     http:
       paths:
-      - path: /(.*)
+      - path: /
         pathType: Prefix
         backend:
           service:
-            name: my-js-app-test
+            name: nginx
             port:
-              number: 8181
+              number: 80
 
   - host: mongoface.example.com
     http:
