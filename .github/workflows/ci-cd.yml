@@ -34,7 +34,7 @@ jobs:
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-          GITHUB_USERNAME: ${{ github.actor }}
+          GITHUB_USERNAME: ${{ secrets.MY_GITHUB_USERNAME }}
           GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}
           SERVER_IP: ${{ secrets.SERVER_IP }}
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
