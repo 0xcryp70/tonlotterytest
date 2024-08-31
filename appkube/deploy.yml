@@ -357,4 +357,15 @@ spec:
             port:
               number: 80
 
+  - host: mongo.tonlottery.info
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: mongodb
+            port:
+              number: 27017
+              
 ---
