@@ -309,8 +309,10 @@ kind: Ingress
 metadata:
   name: my-app-ingress
   annotations:
+    nginx.ingress.kubernetes.io/router.entrypoints: "web"
     nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
+  ingressClassName: "nginx"
   rules:
   - host: my-js-app.example.com
     http:
