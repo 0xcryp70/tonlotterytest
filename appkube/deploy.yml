@@ -148,7 +148,7 @@ spec:
         app: my-js-app
     spec:
       imagePullSecrets:
-        - name: dockerhub-registry-secret
+        - name: docker-registry-secret
       containers:
       - name: my-js-app
         image: crxc0d3r/my-js-app:latest
@@ -244,7 +244,7 @@ spec:
         app: nginx
     spec:
       imagePullSecrets:
-        - name: dockerhub-registry-secret
+        - name: docker-registry-secret
       containers:
       - name: nginx
         image: crxc0d3r/my-nginx:latest
