@@ -357,8 +357,8 @@ spec:
             port:
               number: 80
 
-  - host: mongo.tonlottery.info
-    http:
+  - host: mongo.local
+    mongodb:
       paths:
       - path: /
         pathType: Prefix
@@ -367,5 +367,5 @@ spec:
             name: mongodb
             port:
               number: 27017
-              
+
 ---
