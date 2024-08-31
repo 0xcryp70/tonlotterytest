@@ -350,7 +350,7 @@ spec:
   tls:
   - hosts:
     - my-js-app.example.com
-    - my-js-app-test.example.com
+    - app3.tonlottery.info
     - mongoface.example.com
 
 ---
