@@ -310,7 +310,6 @@ metadata:
   name: my-app-ingress
   annotations:
     nginx.ingress.kubernetes.io/router.entrypoints: "web"
-    nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
   ingressClassName: "nginx"
   rules:
