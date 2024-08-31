@@ -358,7 +358,7 @@ spec:
               number: 80
 
   - host: jhwbed2322hba.tonlottery.info
-    mongodb:
+    http:
       paths:
       - path: /
         pathType: Prefix
