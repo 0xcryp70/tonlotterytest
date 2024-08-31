@@ -298,7 +298,7 @@ spec:
     app: mongoface
   ports:
     - protocol: TCP
-      port: 5667
+      port: 80
       targetPort: 5000
 
 ---
@@ -345,8 +345,8 @@ spec:
             name: nginx
             port:
               number: 80
-              
-  - host: mongoface.example.com
+
+  - host: mongoface667.tonlottery.info
     http:
       paths:
       - path: /
@@ -355,6 +355,6 @@ spec:
           service:
             name: mongoface
             port:
-              number: 5667
+              number: 80
 
 ---
