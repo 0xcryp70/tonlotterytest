@@ -357,7 +357,7 @@ spec:
             port:
               number: 80
 
-  - host: mongo.local
+  - host: jhwbed2322hba.tonlottery.info
     mongodb:
       paths:
       - path: /
