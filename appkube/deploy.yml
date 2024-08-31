@@ -36,8 +36,9 @@ spec:
           mountPath: /data/db
       volumes:
       - name: mongodb-data
-        persistentVolumeClaim:
-          claimName: mongodb-pvc
+        hostPath:
+          path: /mongodb-data
+          type: DirectoryOrCreate
 
 ---
 # File: k8s/mongodb-service.yaml
