@@ -171,6 +171,13 @@ spec:
         image: crxc0d3r/my-nginx:latest
         ports:
         - containerPort: 80
+        # Configure Nginx to expose the status
+      - name: nginx-prometheus-exporter
+        image: nginx/nginx-prometheus-exporter:latest
+        args:
+        - -nginx.scrape-uri=http://localhost:8080/nginx_status
+        ports:
+        - containerPort: 9113
 
 ---
 # File: k8s/nginx-service.yaml
@@ -291,25 +298,3 @@ spec:
 
 ---
 
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: grafana-ingress
-  namespace: default
-  annotations:
-    nginx.ingress.kubernetes.io/router.entrypoints: "web"
-spec:
-  ingressClassName: "nginx"
-  rules:
-    - host: grafana.tonlottery.info
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: my-prometheus-grafana
-                port:
-                  number: 80
-
----
