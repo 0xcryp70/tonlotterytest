@@ -296,8 +296,9 @@ metadata:
   name: grafana-ingress
   namespace: default
   annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/router.entrypoints: "web"
 spec:
+  ingressClassName: "nginx"
   rules:
     - host: grafana.tonlottery.info
       http:
