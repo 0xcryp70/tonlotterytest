@@ -175,7 +175,7 @@ spec:
       - name: nginx-prometheus-exporter
         image: nginx/nginx-prometheus-exporter:latest
         args:
-        - -nginx.scrape-uri=http://localhost:8080/nginx_status
+        - -nginx.scrape-uri=http://nginx:8080/nginx_status
         ports:
         - containerPort: 9113
 
