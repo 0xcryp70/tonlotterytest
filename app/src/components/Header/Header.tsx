@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import { TonConnectButton } from "@tonconnect/ui-react";
 import axios from 'axios';
 import './header.scss';
-import titleImage from '../../assets/images/title-image.png';
 import rankImage from '../../assets/images/rank.png';
 import userImage from '../../assets/images/user.png';
 
