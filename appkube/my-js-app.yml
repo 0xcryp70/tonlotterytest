@@ -1,0 +1,47 @@
+
+# File: k8s/app-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-js-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: my-js-app
+  template:
+    metadata:
+      labels:
+        app: my-js-app
+    spec:
+      imagePullSecrets:
+        - name: docker-registry-secret
+      containers:
+      - name: my-js-app
+        image: crxc0d3r/my-js-app:latest
+        ports:
+        - containerPort: 8080
+        - containerPort: 3001
+        env:
+        - name: MONGO_URI
+          value: mongodb://$(MONGO_USERNAME):$(MONGO_PASSWORD)@mongodb:27017/mydatabase?authSource=admin
+        envFrom:
+        - secretRef:
+            name: mongodb-secret
+
+---
+# File: k8s/app-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-js-app
+spec:
+  selector:
+    app: my-js-app
+  ports:
+    - name: http
+      port: 8080
+      targetPort: 8080
+    - name: alt-port
+      port: 3001
+      targetPort: 3001

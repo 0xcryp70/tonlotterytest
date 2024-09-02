@@ -1,0 +1,53 @@
+
+# File: k8s/backup-cronjob.yaml
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: mongodb-backup
+spec:
+  schedule: "0 1 * * *"  # Run daily at 1 AM
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          imagePullSecrets:
+            - name: github-registry-secret
+          containers:
+          - name: backup
+            image: ghcr.io/0xcryp70/my-mongodb:latest
+            command:
+            - /bin/sh
+            - -c
+            - mongodump --host mongodb --username $(MONGO_USERNAME) --password $(MONGO_PASSWORD) --out /backups/$(date +"%Y-%m-%d")
+            env:
+            - name: MONGO_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: mongodb-secret
+                  key: username
+            - name: MONGO_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mongodb-secret
+                  key: password
+            volumeMounts:
+            - name: backup-volume
+              mountPath: /backups
+          restartPolicy: OnFailure
+          volumes:
+          - name: backup-volume
+            persistentVolumeClaim:
+              claimName: backup-pvc
+
+---
+# File: k8s/backup-pvc.yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: backup-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi

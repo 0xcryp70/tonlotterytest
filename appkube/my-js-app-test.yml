@@ -1,0 +1,46 @@
+# File: k8s/app-test-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-js-app-test
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: my-js-app-test
+  template:
+    metadata:
+      labels:
+        app: my-js-app-test
+    spec:
+      imagePullSecrets:
+        - name: github-registry-secret
+      containers:
+      - name: my-js-app-test
+        image: ghcr.io/0xcryp70/my-js-app-test:latest
+        ports:
+        - containerPort: 8181
+        - containerPort: 3000
+        env:
+        - name: MONGO_URI
+          value: mongodb://$(MONGO_USERNAME):$(MONGO_PASSWORD)@mongodb:27017/mydatabase?authSource=admin
+        envFrom:
+        - secretRef:
+            name: mongodb-secret
+
+---
+# File: k8s/app-test-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-js-app-test
+spec:
+  selector:
+    app: my-js-app-test
+  ports:
+    - name: http
+      port: 8181
+      targetPort: 8181
+    - name: alt-port
+      port: 3000
+      targetPort: 3000

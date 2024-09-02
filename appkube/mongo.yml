@@ -89,12 +89,38 @@ spec:
       storage: 1Gi
 
 ---
-# File: k8s/mongodb-secret.yaml
-apiVersion: v1
-kind: Secret
+
+# File: k8s/mongoface-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
 metadata:
-  name: mongodb-secret
-type: Opaque
-stringData:
-  username: B14ckc0d3r
-  password: B14ckc0d3rSaeed
+  name: mongoface
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mongoface
+  template:
+    metadata:
+      labels:
+        app: mongoface
+    spec:
+      containers:
+      - name: mongoface
+        image: samueltallet/mongodb-php-gui
+        ports:
+        - containerPort: 5000
+
+---
+# File: k8s/mongoface-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: mongoface
+spec:
+  selector:
+    app: mongoface
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 5000
