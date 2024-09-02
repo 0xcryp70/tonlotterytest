@@ -48,7 +48,7 @@ export const Header = ({ memberLevel }) => {
   };
 
   const redirectToOtherPage = () => {
-    window.location.href = 'https://tonlottery.info/app404';
+    window.location.href = 'https://tonlottery.info/';
   };
 
   return (
