@@ -13,12 +13,19 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
+    outputs:
+      app_image: ${{ steps.check_app.outputs.image }}
+      app_test_image: ${{ steps.check_app_test.outputs.image }}
+      nginx_image: ${{ steps.check_nginx.outputs.image }}
+      mongo_image: ${{ steps.check_mongo.outputs.image }}
     steps:
     - name: Checkout code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 2
 
     - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v1
+      uses: docker/setup-buildx-action@v2
 
     - name: Login to Docker Hub
       uses: docker/login-action@v2
@@ -33,76 +40,68 @@ jobs:
         username: ${{ github.actor }}
         password: ${{ secrets.MY_GITHUB_TOKEN }}
 
-    - name: Check for changes in app folder
+    - name: Check and build JS app
       id: check_app
       run: |
-        git diff --quiet HEAD^ HEAD app || echo "::set-output name=changed::true"
+        if git diff --quiet HEAD^ HEAD app; then
+          echo "No changes in app folder"
+          echo "image=crxc0d3r/my-js-app:latest" >> $GITHUB_OUTPUT
+        else
+          echo "Changes detected in app folder"
+          docker build -t crxc0d3r/my-js-app:${{ github.sha }} -t crxc0d3r/my-js-app:latest .
+          docker push crxc0d3r/my-js-app:${{ github.sha }}
+          docker push crxc0d3r/my-js-app:latest
+          echo "image=crxc0d3r/my-js-app:${{ github.sha }}" >> $GITHUB_OUTPUT
+        fi
 
-    - name: Build and push JS app Docker image
-      if: steps.check_app.outputs.changed == 'true'
-      uses: docker/build-push-action@v2
-      with:
-        context: .
-        file: ./Dockerfile
-        push: true
-        tags: crxc0d3r/my-js-app:latest
-        cache-from: crxc0d3r/my-js-app:latest
-        cache-to: type=inline
-
-    - name: Check for changes in app test folder
+    - name: Check and build JS app test
       id: check_app_test
       run: |
-        git diff --quiet HEAD^ HEAD app_test || echo "::set-output name=changed::true"
-        
-    - name: Build and push JS app test Docker image
-      if: steps.check_app_test.outputs.changed == 'true'
-      uses: docker/build-push-action@v2
-      with:
-        context: .
-        file: ./Dockerfile.beta
-        push: true
-        tags: ghcr.io/0xcryp70/my-js-app-test:latest
-        cache-from: type=registry,ref=ghcr.io/0xcryp70/my-js-app-test:latest
-        cache-to: type=inline
+        if git diff --quiet HEAD^ HEAD app_test; then
+          echo "No changes in app_test folder"
+          echo "image=ghcr.io/0xcryp70/my-js-app-test:latest" >> $GITHUB_OUTPUT
+        else
+          echo "Changes detected in app_test folder"
+          docker build -t ghcr.io/0xcryp70/my-js-app-test:${{ github.sha }} -t ghcr.io/0xcryp70/my-js-app-test:latest -f Dockerfile.beta .
+          docker push ghcr.io/0xcryp70/my-js-app-test:${{ github.sha }}
+          docker push ghcr.io/0xcryp70/my-js-app-test:latest
+          echo "image=ghcr.io/0xcryp70/my-js-app-test:${{ github.sha }}" >> $GITHUB_OUTPUT
+        fi
 
-    - name: Check for changes in Nginx configuration
+    - name: Check and build Nginx
       id: check_nginx
       run: |
-        git diff --quiet HEAD^ HEAD Dockerfile.nginx nginx.conf || echo "::set-output name=changed::true"
+        if git diff --quiet HEAD^ HEAD Dockerfile.nginx nginx.conf; then
+          echo "No changes in Nginx configuration"
+          echo "image=crxc0d3r/my-nginx:latest" >> $GITHUB_OUTPUT
+        else
+          echo "Changes detected in Nginx configuration"
+          docker build -t crxc0d3r/my-nginx:${{ github.sha }} -t crxc0d3r/my-nginx:latest -f Dockerfile.nginx .
+          docker push crxc0d3r/my-nginx:${{ github.sha }}
+          docker push crxc0d3r/my-nginx:latest
+          echo "image=crxc0d3r/my-nginx:${{ github.sha }}" >> $GITHUB_OUTPUT
+        fi
 
-    - name: Build and push Nginx Docker image
-      if: steps.check_nginx.outputs.changed == 'true'
-      uses: docker/build-push-action@v2
-      with:
-        context: .
-        file: ./Dockerfile.nginx
-        push: true
-        tags: crxc0d3r/my-nginx:latest
-        cache-from: type=registry,ref=crxc0d3r/my-nginx:latest
-        cache-to: type=inline
-
-    - name: Check for changes in mongo configuration
+    - name: Check and build MongoDB
       id: check_mongo
       run: |
-        git diff --quiet HEAD^ HEAD Dockerfile.mongodb || echo "::set-output name=changed::true"
-
-    - name: Build and push custom MongoDB Docker image
-      if: steps.check_mongo.outputs.changed == 'true'
-      uses: docker/build-push-action@v2
-      with:
-        context: .
-        file: ./Dockerfile.mongodb  # Ensure the Dockerfile path is correct
-        push: true
-        tags: ghcr.io/0xcryp70/my-mongodb:latest
-        cache-from: type=registry,ref=ghcr.io/0xcryp70/my-mongodb:latest
-        cache-to: type=inline
+        if git diff --quiet HEAD^ HEAD Dockerfile.mongodb; then
+          echo "No changes in MongoDB configuration"
+          echo "image=ghcr.io/0xcryp70/my-mongodb:latest" >> $GITHUB_OUTPUT
+        else
+          echo "Changes detected in MongoDB configuration"
+          docker build -t ghcr.io/0xcryp70/my-mongodb:${{ github.sha }} -t ghcr.io/0xcryp70/my-mongodb:latest -f Dockerfile.mongodb .
+          docker push ghcr.io/0xcryp70/my-mongodb:${{ github.sha }}
+          docker push ghcr.io/0xcryp70/my-mongodb:latest
+          echo "image=ghcr.io/0xcryp70/my-mongodb:${{ github.sha }}" >> $GITHUB_OUTPUT
+        fi
 
   test:
     runs-on: ubuntu-latest
     needs: build
     steps:
     - name: Checkout code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Login to Docker Hub
       uses: docker/login-action@v2
@@ -122,14 +121,14 @@ jobs:
 
     - name: Pull and Run Docker containers
       run: |
-        docker pull ghcr.io/0xcryp70/my-mongodb:latest
-        docker run -d --network my-network --name my-mongodb ghcr.io/0xcryp70/my-mongodb:latest
-        docker pull crxc0d3r/my-js-app:latest
-        docker pull crxc0d3r/my-nginx:latest
-        docker pull ghcr.io/0xcryp70/my-js-app-test:latest
-        docker run -d --network my-network --name my-js-app crxc0d3r/my-js-app:latest
-        docker run -d --network my-network --name my-js-app-test ghcr.io/0xcryp70/my-js-app-test:latest
-        docker run -d --network my-network --name my-nginx-container crxc0d3r/my-nginx:latest
+        docker pull ${{ needs.build.outputs.mongo_image }}
+        docker run -d --network my-network --name my-mongodb ${{ needs.build.outputs.mongo_image }}
+        docker pull ${{ needs.build.outputs.app_image }}
+        docker pull ${{ needs.build.outputs.nginx_image }}
+        docker pull ${{ needs.build.outputs.app_test_image }}
+        docker run -d --network my-network --name my-js-app ${{ needs.build.outputs.app_image }}
+        docker run -d --network my-network --name my-js-app-test ${{ needs.build.outputs.app_test_image }}
+        docker run -d --network my-network --name my-nginx-container ${{ needs.build.outputs.nginx_image }}
         
     - name: Wait for services to start
       run: sleep 21  # Adjust this time if your services take longer to start
@@ -180,7 +179,7 @@ jobs:
     needs: [build, test]
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Copy Kubernetes manifests to server
         env:
@@ -200,6 +199,10 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}
           SERVER_IP: ${{ secrets.SERVER_IP }}
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          APP_IMAGE: ${{ needs.build.outputs.app_image }}
+          APP_TEST_IMAGE: ${{ needs.build.outputs.app_test_image }}
+          NGINX_IMAGE: ${{ needs.build.outputs.nginx_image }}
+          MONGO_IMAGE: ${{ needs.build.outputs.mongo_image }}
         run: |
           echo "$SSH_PRIVATE_KEY" > ssh_key
           chmod 600 ssh_key
@@ -221,6 +224,12 @@ jobs:
               --docker-password=$GITHUB_TOKEN \
               --namespace=myapp \
               --dry-run=client -o yaml | kubectl apply -f -
+
+            # Update image tags in deployment files
+            sed -i 's|crxc0d3r/my-js-app:latest|$APP_IMAGE|g' /home/app/deployment-js-app.yaml
+            sed -i 's|ghcr.io/0xcryp70/my-js-app-test:latest|$APP_TEST_IMAGE|g' /home/app/deployment-js-app-test.yaml
+            sed -i 's|crxc0d3r/my-nginx:latest|$NGINX_IMAGE|g' /home/app/deployment-nginx.yaml
+            sed -i 's|ghcr.io/0xcryp70/my-mongodb:latest|$MONGO_IMAGE|g' /home/app/deployment-mongodb.yaml
 
             kubectl apply -f /home/app/ -n myapp
 
