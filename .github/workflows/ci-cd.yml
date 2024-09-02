@@ -188,7 +188,7 @@ jobs:
         run: |
           echo "$SSH_PRIVATE_KEY" > ssh_key
           chmod 600 ssh_key
-          scp -i ssh_key -o StrictHostKeyChecking=no -r appkube/* root@$SERVER_IP:/home/app/
+          scp -i ssh_key -o StrictHostKeyChecking=no -r appkube/* root@$SERVER_IP:/home/config/
           rm ssh_key
 
       - name: Deploy to K3s
@@ -226,10 +226,10 @@ jobs:
               --dry-run=client -o yaml | kubectl apply -f -
 
             # Update image tags in deployment files
-            sed -i 's|crxc0d3r/my-js-app:latest|$APP_IMAGE|g' /home/app/deployment-js-app.yaml
-            sed -i 's|ghcr.io/0xcryp70/my-js-app-test:latest|$APP_TEST_IMAGE|g' /home/app/deployment-js-app-test.yaml
-            sed -i 's|crxc0d3r/my-nginx:latest|$NGINX_IMAGE|g' /home/app/deployment-nginx.yaml
-            sed -i 's|ghcr.io/0xcryp70/my-mongodb:latest|$MONGO_IMAGE|g' /home/app/deployment-mongodb.yaml
+            sed -i 's|crxc0d3r/my-js-app:latest|$APP_IMAGE|g' /home/config/deployment-js-app.yaml
+            sed -i 's|ghcr.io/0xcryp70/my-js-app-test:latest|$APP_TEST_IMAGE|g' /home/config/deployment-js-app-test.yaml
+            sed -i 's|crxc0d3r/my-nginx:latest|$NGINX_IMAGE|g' /home/config/deployment-nginx.yaml
+            sed -i 's|ghcr.io/0xcryp70/my-mongodb:latest|$MONGO_IMAGE|g' /home/config/deployment-mongodb.yaml
 
             kubectl apply -f /home/app/ -n myapp
 
