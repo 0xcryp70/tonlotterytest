@@ -24,7 +24,7 @@ export const Header = ({ memberLevel }) => {
         checkIfUserIsBanned(id);
       } else {
         console.error('Telegram ID not found.');
-     //   redirectToOtherPage();
+        redirectToOtherPage();
       }
     } catch (error) {
       console.error('Error initializing Telegram data:', error);
