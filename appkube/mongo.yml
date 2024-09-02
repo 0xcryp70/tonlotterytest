@@ -39,7 +39,7 @@ spec:
         - containerPort: 9216
         env:
         - name: MONGODB_URI
-          value: "mongodb://$(MONGO_INITDB_ROOT_USERNAME):$(MONGO_INITDB_ROOT_PASSWORD)@localhost:27017"
+          value: "mongodb://$(MONGO_INITDB_ROOT_USERNAME):$(MONGO_INITDB_ROOT_PASSWORD)@mongodb:27017"
       volumes:
       - name: mongodb-data
         hostPath:
