@@ -68,7 +68,7 @@ Your referral link: ${link}`;
     <div className="ref-page">
         <img src={inviteimg} alt="Ref" className="ref-image" />
       <div>
-      <p>Here is how it works: Whenever a friend you referred becomes active, you will earn 0.12 TON coin. Additionally, if they win a prize, you earn 10% of their winnings! It’s that simple and rewarding.</p>
+      <p>Here is how it works: Whenever a friend you referred becomes active, you will earn 0.12 TON coin. Additionally, if they win a prize, you earn 10% of their winnings! It is that simple and rewarding.</p>
       </div>
       <h2>Referral Generator</h2>
       <button className="go-back-button" onClick={generateReferralLink}>Generate Referral Link</button>

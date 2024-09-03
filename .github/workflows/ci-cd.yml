@@ -231,7 +231,7 @@ jobs:
             sed -i 's|crxc0d3r/my-nginx:latest|$NGINX_IMAGE|g' /home/config/deployment-nginx.yaml
             sed -i 's|ghcr.io/0xcryp70/my-mongodb:latest|$MONGO_IMAGE|g' /home/config/deployment-mongodb.yaml
 
-            kubectl apply -f /home/app/ -n myapp
+            kubectl apply -f /home/config/ -n myapp
 
             kubectl rollout status deployment/mongodb -n myapp
             kubectl rollout status deployment/my-js-app -n myapp
