@@ -44,7 +44,7 @@ jobs:
     - name: Check and build JS app
       id: check_app
       run: |
-        if git diff --quiet HEAD^ HEAD app; then
+        if git diff --quiet HEAD^ HEAD -- app; then
           echo "No changes in app folder"
           echo "image=crxc0d3r/my-js-app:latest" >> $GITHUB_OUTPUT
         else
@@ -58,7 +58,7 @@ jobs:
     - name: Check and build JS app test
       id: check_app_test
       run: |
-        if git diff --quiet HEAD^ HEAD app_test; then
+        if git diff --quiet HEAD^ HEAD -- app_test; then
           echo "No changes in app_test folder"
           echo "image=ghcr.io/0xcryp70/my-js-app-test:latest" >> $GITHUB_OUTPUT
         else
@@ -72,7 +72,7 @@ jobs:
     - name: Check and build Nginx
       id: check_nginx
       run: |
-        if git diff --quiet HEAD^ HEAD Dockerfile.nginx nginx.conf; then
+        if git diff --quiet HEAD^ HEAD -- Dockerfile.nginx nginx.conf; then
           echo "No changes in Nginx configuration"
           echo "image=crxc0d3r/my-nginx:latest" >> $GITHUB_OUTPUT
         else
@@ -86,7 +86,7 @@ jobs:
     - name: Check and build MongoDB
       id: check_mongo
       run: |
-        if git diff --quiet HEAD^ HEAD Dockerfile.mongodb; then
+        if git diff --quiet HEAD^ HEAD -- Dockerfile.mongodb; then
           echo "No changes in MongoDB configuration"
           echo "image=ghcr.io/0xcryp70/my-mongodb:latest" >> $GITHUB_OUTPUT
         else
@@ -100,7 +100,7 @@ jobs:
     - name: Check and build Test container
       id: check_test
       run: |
-        if git diff --quiet HEAD^ HEAD Dockerfile.test; then
+        if git diff --quiet HEAD^ HEAD -- Dockerfile.test; then
           echo "No changes in Test container configuration"
           echo "image=ghcr.io/0xcryp70/my-test-container:latest" >> $GITHUB_OUTPUT
         else
