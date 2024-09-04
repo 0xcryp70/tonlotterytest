@@ -1,0 +1,10 @@
+FROM node:lts-alpine3.20 AS build
+WORKDIR /usr/local/app
+COPY ./test /usr/local/app
+
+RUN npm install
+
+EXPOSE 8282
+EXPOSE 3002
+
+CMD ["node", "index.js"]
