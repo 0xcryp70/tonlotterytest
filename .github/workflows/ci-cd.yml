@@ -261,7 +261,7 @@ jobs:
             sed -i 's|ghcr.io/0xcryp70/my-js-app-test:latest|$APP_TEST_IMAGE|g' /home/config/deployment-js-app-test.yaml
             sed -i 's|crxc0d3r/my-nginx:latest|$NGINX_IMAGE|g' /home/config/deployment-nginx.yaml
             sed -i 's|ghcr.io/0xcryp70/my-mongodb:latest|$MONGO_IMAGE|g' /home/config/deployment-mongodb.yaml
-            sed -i 's|ghcr.io/0xcryp70/my-test-container:latest|$TEST_IMAGE|g' /home/config/deployment-test.yaml
+            sed -i 's|ghcr.io/0xcryp70/my-test-container:latest|$TEST_IMAGE|g' /home/config/deployment-my-test-container.yaml
 
             kubectl apply -f /home/config/ -n myapp
 
