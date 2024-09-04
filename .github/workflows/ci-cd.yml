@@ -144,8 +144,9 @@ jobs:
         docker pull ${{ needs.build.outputs.test_image }}
         docker run -d --network my-network --name my-js-app ${{ needs.build.outputs.app_image }}
         docker run -d --network my-network --name my-js-app-test ${{ needs.build.outputs.app_test_image }}
-        docker run -d --network my-network --name my-nginx-container ${{ needs.build.outputs.nginx_image }}
         docker run -d --network my-network --name my-test-container ${{ needs.build.outputs.test_image }}
+        docker run -d --network my-network --name my-nginx-container ${{ needs.build.outputs.nginx_image }}
+
         
     - name: Wait for services to start
       run: sleep 21  # Adjust this time if your services take longer to start
