@@ -9,8 +9,8 @@ export default defineConfig({
     port: 8383,        // Frontend port
     ws: true,
     proxy: {
-      '/auth': 'http://backend-container:3002',
-      '/steps': 'http://backend-container:3002'
+      '/auth': 'http://api3.tonlottery.info',
+      '/steps': 'http://api3.tonlottery.info'
     }
   }
 });
