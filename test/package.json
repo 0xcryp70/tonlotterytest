@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "dev": "vite", 
+    "dev": "vite --host --port 8383 --force",
     "build": "vite build",
     "serve": "vite preview"
   },
