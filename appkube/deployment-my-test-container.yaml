@@ -19,7 +19,7 @@ spec:
       - name: my-test-container
         image: ghcr.io/0xcryp70/my-test-container:latest
         ports:
-        - containerPort: 8282
+        - containerPort: 8383
         - containerPort: 3002
         env:
         - name: MONGO_URI
@@ -39,8 +39,8 @@ spec:
     app: my-test-container
   ports:
     - name: http
-      port: 8282
-      targetPort: 8282
+      port: 8383
+      targetPort: 8383
     - name: alt-port
       port: 3002
       targetPort: 3002
