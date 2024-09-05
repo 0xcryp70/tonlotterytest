@@ -43,4 +43,4 @@ spec:
       targetPort: 8383
     - name: alt-port
       port: 3002
-      targetPort: 3002
+      targetPort: 3002 
