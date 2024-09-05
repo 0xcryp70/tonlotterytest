@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import './App.css';  // Assuming the CSS file is named 'App.css'
 
 // Import Telegram WebApp
 const tg = window.Telegram.WebApp;
