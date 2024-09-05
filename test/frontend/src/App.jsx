@@ -1,30 +1,68 @@
 import React, { useState, useEffect } from 'react';
 
+// Import Telegram WebApp
+const tg = window.Telegram.WebApp;
+
 function App() {
   const [telegramId, setTelegramId] = useState(null);
-  const [steps, setSteps] = useState(0);
+  const [steps, setSteps] = useState(null);
   const [isTracking, setIsTracking] = useState(false);
-  const [watchId, setWatchId] = useState(null);
   const [lastPosition, setLastPosition] = useState(null);
+  const [watchId, setWatchId] = useState(null);
 
   // Constants
   const STEP_LENGTH = 0.7; // Average step length in meters
   const MIN_ACCURACY = 20; // Minimum GPS accuracy in meters
-  const tg = window.Telegram.WebApp;
 
   useEffect(() => {
+    // Initialize Telegram mini app
     tg.ready();
     tg.expand();
+
+    // Set the app header color
     tg.setHeaderColor('#5E97F6');
-    setTelegramId(tg.initDataUnsafe.user?.id || null);
-  }, [tg]);
+
+    // Get Telegram user ID
+    const user = tg.initDataUnsafe.user;
+    if (user) {
+      setTelegramId(user.id);
+    }
+  }, []);
+
+  const handleFetchSteps = async () => {
+    if (!telegramId) {
+      tg.showPopup({
+        title: 'Error',
+        message: 'Telegram ID not found.',
+        buttons: [{ type: 'ok' }]
+      });
+      return;
+    }
+
+    try {
+      // Implement Google Fit API call here
+      // For now, we'll just show a placeholder message
+      tg.showPopup({
+        title: 'Google Fit',
+        message: 'Fetching steps from Google Fit is not implemented yet.',
+        buttons: [{ type: 'ok' }]
+      });
+    } catch (error) {
+      console.error('Error fetching steps:', error);
+      tg.showPopup({
+        title: 'Error',
+        message: 'Failed to fetch steps from Google Fit.',
+        buttons: [{ type: 'ok' }]
+      });
+    }
+  };
 
   const startTracking = () => {
     if ("geolocation" in navigator) {
       const id = navigator.geolocation.watchPosition(handlePosition, handleError, {
         enableHighAccuracy: true,
         maximumAge: 0,
-        timeout: 5000,
+        timeout: 5000
       });
       setWatchId(id);
       setIsTracking(true);
@@ -34,7 +72,11 @@ function App() {
         buttons: [{ type: 'ok' }]
       });
     } else {
-      tg.showAlert("Geolocation is not supported by this device.");
+      tg.showPopup({
+        title: 'Error',
+        message: 'Geolocation is not supported by this device.',
+        buttons: [{ type: 'ok' }]
+      });
     }
   };
 
@@ -52,7 +94,7 @@ function App() {
   };
 
   const handlePosition = (position) => {
-    if (!lastPosition) {
+    if (lastPosition === null) {
       setLastPosition(position);
       return;
     }
@@ -72,13 +114,16 @@ function App() {
 
     const newSteps = Math.floor(distance / STEP_LENGTH);
     setSteps((prevSteps) => prevSteps + newSteps);
-
     setLastPosition(position);
   };
 
   const handleError = (error) => {
     console.error('GPS Error:', error);
-    tg.showAlert('Error tracking steps. Please check your GPS settings.');
+    tg.showPopup({
+      title: 'Error',
+      message: 'Error tracking steps. Please check your GPS settings.',
+      buttons: [{ type: 'ok' }]
+    });
   };
 
   const calculateDistance = (lat1, lon1, lat2, lon2) => {
@@ -89,23 +134,26 @@ function App() {
     const Δλ = (lon2 - lon1) * Math.PI / 180;
 
     const a = Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
-      Math.cos(φ1) * Math.cos(φ2) *
-      Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
+              Math.cos(φ1) * Math.cos(φ2) *
+              Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 
     return R * c;
   };
 
   return (
-    <div className="container">
-      <h1>GPS-based Step Counter</h1>
-      <p>Steps Taken: {steps}</p>
-      <button onClick={startTracking} disabled={isTracking}>
-        Start Tracking
+    <div className="App">
+      <h1>Step Counter</h1>
+      <p>Telegram ID: {telegramId || 'Not available'}</p>
+      <p>Steps: {steps || 0}</p>
+      
+      <h2>GPS Tracking</h2>
+      <button onClick={isTracking ? stopTracking : startTracking}>
+        {isTracking ? 'Stop Tracking' : 'Start Tracking'}
       </button>
-      <button onClick={stopTracking} disabled={!isTracking}>
-        Stop Tracking
-      </button>
+
+      <h2>Google Fit Integration</h2>
+      <button onClick={handleFetchSteps}>Fetch Steps from Google Fit</button>
     </div>
   );
 }
