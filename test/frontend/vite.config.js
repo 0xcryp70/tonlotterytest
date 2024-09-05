@@ -5,9 +5,10 @@ import react from '@vitejs/plugin-react';
 export default defineConfig({
   plugins: [react()],
   server: {
-    host: true,  // This will make Vite listen on 0.0.0.0
+    host: 'my-test-container',  // Make Vite listen on 'my-test-container'
     changeOrigin: true,
     secure: false,
+    ws: true,
     port: 8383,  // You can specify the port, or leave it to default
     proxy: {
       '/auth': 'http://localhost:3002',
