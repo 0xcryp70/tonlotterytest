@@ -8,7 +8,7 @@ export default defineConfig({
     host: true,  // This will make Vite listen on 0.0.0.0
     changeOrigin: true,
     secure: false,
-    port: 3000,  // You can specify the port, or leave it to default
+    port: 8383,  // You can specify the port, or leave it to default
     proxy: {
       '/auth': 'http://localhost:3002',
       '/steps': 'http://localhost:3002'
