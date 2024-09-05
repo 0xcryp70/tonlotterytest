@@ -5,10 +5,11 @@ const tg = window.Telegram.WebApp;
 
 function App() {
   const [telegramId, setTelegramId] = useState(null);
-  const [steps, setSteps] = useState(null);
+  const [steps, setSteps] = useState(0);
   const [isTracking, setIsTracking] = useState(false);
   const [lastPosition, setLastPosition] = useState(null);
   const [watchId, setWatchId] = useState(null);
+  const [distance, setDistance] = useState(0);
 
   // Constants
   const STEP_LENGTH = 0.7; // Average step length in meters
@@ -28,34 +29,6 @@ function App() {
       setTelegramId(user.id);
     }
   }, []);
-
-  const handleFetchSteps = async () => {
-    if (!telegramId) {
-      tg.showPopup({
-        title: 'Error',
-        message: 'Telegram ID not found.',
-        buttons: [{ type: 'ok' }]
-      });
-      return;
-    }
-
-    try {
-      // Implement Google Fit API call here
-      // For now, we'll just show a placeholder message
-      tg.showPopup({
-        title: 'Google Fit',
-        message: 'Fetching steps from Google Fit is not implemented yet.',
-        buttons: [{ type: 'ok' }]
-      });
-    } catch (error) {
-      console.error('Error fetching steps:', error);
-      tg.showPopup({
-        title: 'Error',
-        message: 'Failed to fetch steps from Google Fit.',
-        buttons: [{ type: 'ok' }]
-      });
-    }
-  };
 
   const startTracking = () => {
     if ("geolocation" in navigator) {
@@ -88,7 +61,7 @@ function App() {
     setIsTracking(false);
     tg.showPopup({
       title: 'Tracking Stopped',
-      message: `You've taken approximately ${steps} steps.`,
+      message: `You've taken approximately ${steps} steps over ${distance.toFixed(2)} meters.`,
       buttons: [{ type: 'ok' }]
     });
   };
@@ -105,15 +78,16 @@ function App() {
       return;
     }
 
-    const distance = calculateDistance(
+    const newDistance = calculateDistance(
       lastPosition.coords.latitude,
       lastPosition.coords.longitude,
       position.coords.latitude,
       position.coords.longitude
     );
 
-    const newSteps = Math.floor(distance / STEP_LENGTH);
+    const newSteps = Math.floor(newDistance / STEP_LENGTH);
     setSteps((prevSteps) => prevSteps + newSteps);
+    setDistance((prevDistance) => prevDistance + newDistance);
     setLastPosition(position);
   };
 
@@ -141,19 +115,30 @@ function App() {
     return R * c;
   };
 
+  const resetCounting = () => {
+    setSteps(0);
+    setDistance(0);
+    setLastPosition(null);
+    tg.showPopup({
+      title: 'Reset',
+      message: 'Step count and distance have been reset to 0.',
+      buttons: [{ type: 'ok' }]
+    });
+  };
+
   return (
     <div className="App">
-      <h1>Step Counter</h1>
+      <h1>GPS Step Counter</h1>
       <p>Telegram ID: {telegramId || 'Not available'}</p>
-      <p>Steps: {steps || 0}</p>
+      <p>Steps: {steps}</p>
+      <p>Distance: {distance.toFixed(2)} meters</p>
       
-      <h2>GPS Tracking</h2>
       <button onClick={isTracking ? stopTracking : startTracking}>
         {isTracking ? 'Stop Tracking' : 'Start Tracking'}
       </button>
-
-      <h2>Google Fit Integration</h2>
-      <button onClick={handleFetchSteps}>Fetch Steps from Google Fit</button>
+      <button onClick={resetCounting} disabled={isTracking}>
+        Reset Count
+      </button>
     </div>
   );
 }
