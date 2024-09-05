@@ -21,7 +21,7 @@ WORKDIR /usr/local/app/frontend
 RUN npm install
 
 # Expose ports for backend and frontend
-EXPOSE 5173
+EXPOSE 8383
 EXPOSE 3002
 
 # Start the backend server
