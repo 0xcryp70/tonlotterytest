@@ -6,6 +6,7 @@ const cors = require('cors');
 const app = express();
 
 const PORT = process.env.PORT || 3002;
+const HOST = '0.0.0.0'; 
 const CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
 const CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
 const REDIRECT_URI = process.env.REDIRECT_URI;
@@ -86,7 +87,7 @@ async function getStepsData(accessToken) {
     return stepCount;
 }
 
-app.listen(PORT, () => {
-    console.log(`Backend server running on port ${PORT}`);
+app.listen(PORT, HOST, () => {
+        console.log(`Backend server running on port ${PORT}`);
 });
 

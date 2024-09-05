@@ -16,7 +16,7 @@ function App() {
     }
     
     try {
-      const response = await fetch(`http://localhost:3002/steps?userId=${telegramId}`);
+      const response = await fetch(`https://api3.tonlottery.info/steps?userId=${telegramId}`);
       const data = await response.json();
       setSteps(data.steps);
     } catch (error) {
@@ -33,7 +33,7 @@ function App() {
           <p>Telegram ID: {telegramId}</p>
 
           {/* Button to trigger OAuth authorization */}
-          <a href={`http://localhost:3002/auth/google?userId=${telegramId}`} className="btn">
+          <a href={`https://api3.tonlottery.info/auth/google?userId=${telegramId}`} className="btn">
             Authorize Google Fit
           </a>
 
