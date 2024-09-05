@@ -3,10 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "dev": "vite --host 0.0.0.0",
+    "dev": "vite", 
     "build": "vite build",
-    "serve": "vite preview --host 0.0.0.0",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "serve": "vite preview"
   },
   "keywords": [],
   "author": "",
