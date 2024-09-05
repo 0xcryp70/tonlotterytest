@@ -9,7 +9,7 @@ WORKDIR /usr/local/app/backend
 
 RUN npm install
 # Install backend dependencies
-RUN npm npm start &
+RUN npm start &
 
 # Build the backend (if necessary)
 
@@ -25,4 +25,4 @@ EXPOSE 8383
 EXPOSE 3002
 
 # Start the backend server
-CMD ["npm", "run", "dev"]
+CMD ["npm", "run", "dev"] && ["npm", "--prefix", "/usr/local/app/backend", "start"]

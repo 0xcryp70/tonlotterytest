@@ -7,6 +7,7 @@ export default defineConfig({
   server: {
     host: '0.0.0.0',  // Bind to all network interfaces
     port: 8383,        // Frontend port
+    ws: true,
     proxy: {
       '/auth': 'http://backend-container:3002',
       '/steps': 'http://backend-container:3002'
