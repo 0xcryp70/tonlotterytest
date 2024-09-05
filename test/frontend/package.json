@@ -2,9 +2,9 @@
   "name": "google-fit-frontend",
   "version": "1.0.0",
   "scripts": {
-    "dev": "vite --host --port 8383 --force",
+    "dev": "vite --host 0.0.0.0 --port 8383 --force",  // Explicitly bind to 0.0.0.0
     "build": "vite build",
-    "serve": "vite preview"
+    "serve": "vite preview --host 0.0.0.0 --port 8383"  // Also for preview mode
   },
   "dependencies": {
     "react": "^17.0.2",
