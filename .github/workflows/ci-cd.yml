@@ -185,10 +185,10 @@ jobs:
            fi
          '
 
-    - name: Test if Test container is responding
+    - name: Test if Test container is responding on port 5173
       run: |
          docker exec my-nginx-container bash -c '
-           response=$(curl -s http://my-test-container:3002)
+           response=$(curl -s http://my-test-container:5173)
            if [[ $response == *"<!DOCTYPE html>"* ]] || [[ $response == *"<html"* ]]; then
              echo "Test container detected on port 8282"
            else
