@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const axios = require('axios');
 const path = require('path');
+const cors = require('cors');
 const app = express();
 
 const PORT = process.env.PORT || 3002;
@@ -12,18 +13,17 @@ const REDIRECT_URI = process.env.REDIRECT_URI;
 // In-memory store for user tokens (for simplicity, use a proper database in production)
 const userTokens = {};
 
-// Serve static files from the "public" directory
-app.use(express.static(path.join(__dirname, 'public')));
-app.use(express.json());
+// Enable CORS to allow the frontend (running on a different port) to access backend APIs
+app.use(cors());
 
-// Step 1: Redirect the user to Google's OAuth consent screen
+// Step 1: Redirect the user to Google's OAuth consent screen (GET request)
 app.get('/auth/google', (req, res) => {
     const telegramUserId = req.query.userId;
     const oauthUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${CLIENT_ID}&response_type=code&scope=https://www.googleapis.com/auth/fitness.activity.read&redirect_uri=${REDIRECT_URI}&state=${telegramUserId}&access_type=offline`;
     res.redirect(oauthUrl);
 });
 
-// Step 2: Handle Google OAuth callback and exchange the authorization code for an access token
+// Step 2: Handle Google OAuth callback and exchange the authorization code for an access token (GET request)
 app.get('/auth/callback', async (req, res) => {
     const { code, state: userId } = req.query;
 
@@ -38,18 +38,18 @@ app.get('/auth/callback', async (req, res) => {
 
         const { access_token, refresh_token } = tokenResponse.data;
         userTokens[userId] = { access_token, refresh_token };
-        
-        // Redirect the user back to the mini app
-        res.redirect(`/success.html?userId=${userId}`);
+
+        // Redirect the user back to the frontend after successful authentication
+        res.redirect(`https://test.tonlottery.info/success?userId=${userId}`);
     } catch (error) {
-        console.error('Error during token exchange', error);
+        console.error('Error during token exchange:', error);
         res.status(500).send('Authentication failed.');
     }
 });
 
-// Step 3: Retrieve step data for a specific user
-app.post('/steps', async (req, res) => {
-    const { userId } = req.body;
+// Step 3: Retrieve step data for a specific user using a GET request
+app.get('/steps', async (req, res) => {
+    const { userId } = req.query;
     const tokens = userTokens[userId];
 
     if (!tokens) {
@@ -87,6 +87,6 @@ async function getStepsData(accessToken) {
 }
 
 app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
+    console.log(`Backend server running on port ${PORT}`);
 });
 

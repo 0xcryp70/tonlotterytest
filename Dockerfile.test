@@ -1,10 +1,28 @@
+# Base image for Node.js
 FROM node:lts-alpine3.20 AS build
-WORKDIR /usr/local/app
+
+# Set the working directory for backend
+WORKDIR /usr/local/app/
 COPY ./test /usr/local/app
 
+WORKDIR /usr/local/app/backend
+
+RUN npm install
+# Install backend dependencies
+RUN npm npm start &
+
+# Build the backend (if necessary)
+
+# Set the working directory for frontend
+WORKDIR /usr/local/app/frontend
+
+
+# Install frontend dependencies
 RUN npm install
 
-EXPOSE 8282
+# Expose ports for backend and frontend
+EXPOSE 5173
 EXPOSE 3002
 
-CMD ["node", "index.js"]
+# Start the backend server
+CMD ["npm", "run", "dev"]
