@@ -268,9 +268,10 @@ jobs:
             kubectl rollout status deployment/mongodb -n myapp
             kubectl rollout status deployment/my-js-app -n myapp
             kubectl rollout status deployment/my-js-app-test -n myapp
+            kubectl rollout status deployment/my-test-container -n myapp
             kubectl rollout status deployment/nginx -n myapp
             kubectl rollout status deployment/mongoface -n myapp
-            kubectl rollout status deployment/my-test-container -n myapp
+            
           "
           rm ssh_key
 
