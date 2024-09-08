@@ -173,7 +173,7 @@ export const BalanceDisplay: React.FC<BalanceDisplayProps> = ({ walletAddress, m
     touchStartRef.current = null;
 
     morseCodeTimeoutRef.current = setTimeout(async () => {
-      if (morseCode + morseSymbol === '....__') {
+      if (morseCode + morseSymbol === '...__') {
         setClickLocked(true);
         setLoading(true);
 
