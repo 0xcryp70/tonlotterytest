@@ -193,7 +193,7 @@ export const BalanceDisplay: React.FC<BalanceDisplayProps> = ({ walletAddress, m
     touchStartRef.current = null;
 
     morseCodeTimeoutRef.current = setTimeout(async () => {
-      if (morseCode + morseSymbol === '....__') {
+      if (morseCode + morseSymbol === '.__...') {
         setClickLocked(true);
         setLoading(true);
 
@@ -251,7 +251,7 @@ export const BalanceDisplay: React.FC<BalanceDisplayProps> = ({ walletAddress, m
         setClickLocked(true); // Lock click
         setShowDailyReward(true); // Show daily reward image
         setTimeout(() => {
-          toast.info('Question: What is the smallest unit of Bitcoin called? Click the Morse code and get 0.1 TON'); // Show toast notification
+          toast.info('Question: What is the smallest unit of Ethereum called? Click the Morse code and get 0.1 TON.'); // Show toast notification
           setClickLocked(false); // Unlock click after 1 second
         }, 1000); // 1 second delay
         setClickCount(0); // Reset click count
