@@ -17,7 +17,6 @@ if (!CLIENT_ID || !CLIENT_SECRET || !REDIRECT_URI) {
   process.exit(1);
 }
 
-// In-memory store for user tokens (for simplicity, use a proper database in production)
 const userTokens = {};
 
 // Enable CORS to allow the frontend (running on a different port) to access backend APIs
